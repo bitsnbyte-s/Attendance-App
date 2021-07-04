@@ -61,7 +61,9 @@ function forclosebtns(e) {
 // predefined
 const subjectvalue = document.getElementById('floatingSubjectAdd');
 const addSubjectBtn = document.getElementById('addSubjectBtn');
-const allsubjects = document.getElementById('allsubjects');
+const allsubjectsadd = document.getElementById('allsubjectsadd');
+const allsubjectsmark = document.getElementById('allsubjectsmark');
+let id_count = window.localStorage.getItem('idcount');
 
 // Add Subject Event Listener
 addSubjectBtn.addEventListener('click', () => {
@@ -75,7 +77,9 @@ addSubjectBtn.addEventListener('click', () => {
     }
     else {
         subjectsOutput = JSON.parse(window.localStorage.getItem("AMSubjects"));
-        subjectsOutput.push(subjectvalue.value);
+        // subjectsOutput.push(subjectvalue.value);
+        id_count++;
+        subjectsOutput[id_count] = subjectvalue.value;
         window.localStorage.setItem("AMSubjects", JSON.stringify(subjectsOutput));
         refreshSubjectsList();
         subjectvalue.value="";
@@ -85,15 +89,49 @@ addSubjectBtn.addEventListener('click', () => {
 function refreshSubjectsList() {
     subjectsOutput = JSON.parse(window.localStorage.getItem("AMSubjects"));
     // console.log(subjectsOutput);
-    let allsubjectsinnerhtml = '<h6>Available Subjects:</h6><ul class="list-group list-group-flush">';
-    subjectsOutput.forEach((e) => {
-        allsubjectsinnerhtml += `<li class="list-group-item">${e}</li>`;
-    })
-    allsubjectsinnerhtml += '</ul>';
-    allsubjects.innerHTML = allsubjectsinnerhtml;
+    let allsubjectsaddinnerhtml = '<h6>Available Subjects:</h6><ul class="list-group list-group-flush">';
+    for (const [key, value] of Object.entries(subjectsOutput)) {
+        console.log(`${key}: ${value}`);
+        allsubjectsaddinnerhtml += `<li class="list-group-item">${value}</li>`;
+    }
+    allsubjectsaddinnerhtml += '</ul>';
+    allsubjectsadd.innerHTML = allsubjectsaddinnerhtml;
 }
 
+// ------ Mark Attendance Section
+function refreshAttendanceMarkPage(){   
+    let attendance = window.localStorage.getItem("AMAttendance") ? JSON.parse(window.localStorage.getItem('AMAttendance')) : {};
+    let allsubjectsmarkinnerhtml = '';
+    for (const [key, value] of Object.entries(attendance)) {
+        allsubjectsmarkinnerhtml += `<div class="row px-2 py-2 border-bottom m-0">
+        <div class="col-md-8 py-2">
+            ${subjectsOutput[key]} - `;
+            if(value[1]!=0){
+                allsubjectsmarkinnerhtml += `
+                ${value[0]}/${value[1]} | (${value[0]*100/value[1]}%)`;
+                if(value[0]*100/value[1] < 75){
+                    allsubjectsmarkinnerhtml += `<span class="ps-4 text-danger">Below 75%</span>`;
+                }  
+                else{
+                    allsubjectsmarkinnerhtml += `<span class="ps-4 text-success">Above 75%</span>`;
+                }  
+            }
+            else{
+                allsubjectsmarkinnerhtml += `No Lectures Till Yet`;
+            }
+            
+        allsubjectsmarkinnerhtml +=`</div>
+        <div class="col-md-4 py-2">
+            <button class="btn btn-outline-success">Attend</button>
+            <button class="btn btn-outline-danger">Leave</button>
+        </div>
+    </div>`;
+    };
+    allsubjectsmarkinnerhtml += '</ul>';
+    allsubjectsmark.innerHTML = allsubjectsmarkinnerhtml;
+}
 
 window.addEventListener("DOMContentLoaded", () => {
+    refreshAttendanceMarkPage();
     refreshSubjectsList();
 });
