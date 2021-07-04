@@ -14,7 +14,7 @@
     <title>Attendance Manager</title>
 </head>
 
-<body>
+<body class="d-flex flex-column h-100 postition-relative">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="#">Attendance Manager</a>
@@ -25,7 +25,7 @@
             <div class="collapse navbar-collapse flex-row-reverse" id="navbarNav">
                 <ul class="navbar-nav px-4 nav nav-ta" id="myTab" role="tablist">
                     <li class="nav-item px-1" role="presentation">
-                        <button class="nav-link active btn text-light" id="home-tab" data-bs-toggle="tab"
+                        <button class="nav-lin active btn text-light" id="home-tab" data-bs-toggle="tab"
                             data-bs-target="#home" type="button" role="tab" aria-controls="home"
                             aria-selected="true">Home</button>
                     </li>
@@ -59,6 +59,17 @@
         <div class="tab-content m-4" id="myTabContent">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <h4>Home</h4>
+                <div id="allsubjectsmark" class="mt-4">
+                    <div class="row px-3">
+                        <div class="col-md-8">
+                            An item
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-outline-success">Attend</button>
+                            <button class="btn btn-outline-danger">Leave</button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="tab-pane fade" id="mark" role="tabpanel" aria-labelledby="mark-tab">
                 <h4>Mark Attendance</h4>
@@ -73,7 +84,7 @@
                     </div>
                     <button class="btn btn-outline-primary px-5" id="addSubjectBtn">Add</button>
                 </div>
-                <div id="allsubjects">
+                <div id="allsubjectsadd">
                     
                 </div>
 
@@ -84,6 +95,11 @@
             </div>
         </div>
     </div>
+    <footer class="py-3 bg-light">
+        <div class="container text-center">
+          <span class="text-muted">This Website is developed by Ritik Jaiswal</span>
+        </div>
+      </footer>
 
     <!-- Optional JavaScript; choose one of the two! -->
 
