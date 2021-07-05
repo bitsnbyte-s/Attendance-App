@@ -56,11 +56,11 @@ function forclosebtns(e) {
 }
 
 if (!window.localStorage.getItem("AMSubjects"))
-    window.localStorage.setItem("AMSubjects",{});
+    window.localStorage.setItem("AMSubjects",JSON.stringify({}));
 if (!window.localStorage.getItem("idcount"))
     window.localStorage.setItem("idcount",0);
 if (!window.localStorage.getItem("AMAttendance"))
-    window.localStorage.setItem("AMAttendance",{});
+    window.localStorage.setItem("AMAttendance",JSON.stringify({}));
 
 // ------- AddSubjects Section ---------
 
