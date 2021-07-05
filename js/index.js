@@ -55,6 +55,13 @@ function forclosebtns(e) {
     e.parentElement.classList.add('d-none');
 }
 
+if (!window.localStorage.getItem("AMSubjects"))
+    window.localStorage.setItem("AMSubjects",{});
+if (!window.localStorage.getItem("idcount"))
+    window.localStorage.setItem("idcount",0);
+if (!window.localStorage.getItem("AMAttendance"))
+    window.localStorage.setItem("AMAttendance",{});
+
 // ------- AddSubjects Section ---------
 
 // predefined
