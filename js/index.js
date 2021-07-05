@@ -63,8 +63,8 @@ const addSubjectBtn = document.getElementById('addSubjectBtn');
 const allsubjectsadd = document.getElementById('allsubjectsadd');
 const allsubjectsmark = document.getElementById('allsubjectsmark');
 const divforalert = document.getElementById('foralerts');
-let subjectsOutput = JSON.parse(window.localStorage.getItem("AMSubjects"));
-let id_count = window.localStorage.getItem('idcount');
+let subjectsOutput = localStorage.getItem("AMSubjects") ? JSON.parse(localStorage.getItem('AMSubjects')) : {};
+let id_count = localStorage.getItem("idcount") ? JSON.parse(localStorage.getItem('idcount')) : 0;
 let attendance = window.localStorage.getItem("AMAttendance") ? JSON.parse(window.localStorage.getItem('AMAttendance')) : {};
 
 // Add Subject Event Listener
@@ -78,7 +78,6 @@ addSubjectBtn.addEventListener('click', () => {
                 </div>`;
     }
     else {
-        subjectsOutput = JSON.parse(window.localStorage.getItem("AMSubjects"));
         // subjectsOutput.push(subjectvalue.value);
         id_count++;
         subjectsOutput[id_count] = subjectvalue.value;
