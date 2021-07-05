@@ -30,7 +30,15 @@ if (!window.localStorage.getItem("idcount"))
 if (!window.localStorage.getItem("AMAttendance"))
     window.localStorage.setItem("AMAttendance",JSON.stringify({}));
 if (!window.localStorage.getItem("AMTimeTable"))
-    window.localStorage.setItem("AMTimeTable",JSON.stringify({}));
+    window.localStorage.setItem("AMTimeTable",JSON.stringify({
+        "0":[],
+        "1":[],
+        "2":[],
+        "3":[],
+        "4":[],
+        "5":[],
+        "6":[]
+    }));
 
 // predefined
 const subjectvalue = document.getElementById('floatingSubjectAdd');
