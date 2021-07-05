@@ -134,8 +134,16 @@ function editAttendance(e){
     console.log(document.getElementById(`floatingTotal${idtoedit}`).value);
     const attendededit = parseInt(document.getElementById(`floatingAttended${idtoedit}`).value);
     const totaledit = parseInt(document.getElementById(`floatingTotal${idtoedit}`).value);
-    console.log(`Attended ${attendededit} :: Total ${totaledit}`)
-    if(attendededit<=totaledit){
+    console.log(`Attended ${attendededit} :: Total ${totaledit}`);
+    if(attendededit<0 || totaledit<0){
+        divforalert.innerHTML = `<div class="alert alert-danger justify-content-between d-flex" role="alert">
+                <p class="mb-0">
+                Attended / Total Lectures should be greater than equals to zero !!
+                </p>
+                <button onclick="forclosebtns(this)" type="button" class="btn-close p-1" aria-label="Close"></button>
+                </div>`;
+    }
+    else if(attendededit<=totaledit){
         // console.log(typeof(attendededit))
         attendance[idtoedit][0]=attendededit;
         attendance[idtoedit][1]=totaledit;
