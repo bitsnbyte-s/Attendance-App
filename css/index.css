@@ -12,6 +12,9 @@ footer{
 button{
     max-width: 200px !important;
 }
+.subject-options{
+    max-width: 300px;
+}
 @media (max-width:630px){
     .attendancerow div{
         display: block !important;
