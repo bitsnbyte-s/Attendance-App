@@ -20,7 +20,7 @@
 <body class="d-flex flex-column h-100 postition-relative">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">Attendance Manager</a>
+            <a class="navbar-brand" href="">Attendance Manager</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -51,68 +51,18 @@
         </div>
     </nav>
     <div class="foralerts" id="foralerts">
-        <!-- <div class="alert alert-primary justify-content-between" role="alert">
-            <div>
-            A simple primary alert—check it out!
-            </div>
-            <button type="button" class="btn-close" aria-label="Close"></button>
-          </div> -->
     </div>
     <div class="main-body">
         <div class="container my-4 w-75 bg-light px-0 rounded-3 border shadow">
             <div class="tab-content m-4" id="myTabContent">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <h4>Home</h4>
-                    <div id="allsubjectsmark" class="mt-4">
-                        <div class="px-2 py-2 border-bottom m-0">
-                            <div class="row py-2">
-                                <h6> OS 
-                                    <a class="ps-2 text-success text-decoration-none" data-bs-toggle="collapse"
-                                        href="#collapse1" role="button" aria-expanded="false"
-                                        aria-controls="collapse1">(edit
-                                        <i class="fas fa-angle-down text-dark"></i>)
-                                    </a>
-                                </h6>
-                                <div class="attendancerow">
-                                    <div class="d-inline"><span>Attendance:</span></div>
-                                    <div class="d-inline"><span>41/54 | (75.93%)</span></div>
-                                    <div class="d-inline"><span class="text-success">Above 75%</span></div>
-                                </div>
-                            </div>
-                            <div class="row py-2">
-                                <button data-id="1" onclick="attend(this)"
-                                    class="btn btn-outline-success mx-1 my-1">Attend</button>
-                                <button data-id="1" onclick="leave(this)"
-                                    class="btn btn-outline-danger mx-1 my-1">Leave</button>
-                            </div>
-                            <div class="collapse" id="collapse1">
-                                <div class="card card-body">
-                                    <div class="row">
-                                        <div class="col-md-4 my-2">
-                                            <div class="form-floating">
-                                                <input type="number" class="form-control" id="floatingAttended"
-                                                    placeholder="">
-                                                <label for="floatingAttended">Attended Lectures</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 my-2">
-                                            <div class="form-floating">
-                                                <input type="number" class="form-control" id="floatingTotal" placeholder="">
-                                                <label for="floatingTotal">Total Lectures</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 my-2 align-self-center text-center">
-                                            <button class="btn btn-outline-primary">Confirm Submit</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div class="tab-pane fade" id="mark" role="tabpanel" aria-labelledby="mark-tab">
                     <h4>Mark Attendance</h4>
-                    
+                    <div id="allsubjectsmark" class="mt-4">
+                        
+                    </div>
                 </div>
                 <div class="tab-pane fade" id="addsubjects" role="tabpanel" aria-labelledby="addsubjects-tab">
                     <h4>Add Subjects</h4>
@@ -124,13 +74,34 @@
                         <button class="btn btn-outline-primary px-5" id="addSubjectBtn">Add</button>
                     </div>
                     <div id="allsubjectsadd">
-    
+
                     </div>
-    
+                    
                 </div>
                 <div class="tab-pane fade" id="editTT" role="tabpanel" aria-labelledby="editTT-tab">
                     <h4>Edit TimeTable</h4>
-    
+                    <div>
+                        <p class="px-2 mb-1">Choose a Day </p>
+                        <select class="form-select" onchange="showchange(this)" id="day-select" aria-label="Days">
+                            <option disabled selected>Day</option>
+                            <option value="1">Monday</option>
+                            <option value="2">Tuesday</option>
+                            <option value="3">Wednesday</option>
+                            <option value="4">Thursday</option>
+                            <option value="5">Friday</option>
+                            <option value="6">Saturday</option>
+                            <option value="0">Sunday</option>
+                        </select>
+                    </div>
+                    <div id="TimeTableDays" class="my-3">
+                    </div>
+                    <div id="addSubjectToTT" class="my-3 align-items-top">
+                        <!-- <select class="form-select" aria-label="select example">
+                            <option selected disabled>Choose a Subject</option>
+                            <option value="1">One</option>
+                        </select> -->
+                    </div>
+                    
                 </div>
             </div>
         </div>
