@@ -70,9 +70,9 @@ const addSubjectBtn = document.getElementById('addSubjectBtn');
 const allsubjectsadd = document.getElementById('allsubjectsadd');
 const allsubjectsmark = document.getElementById('allsubjectsmark');
 const divforalert = document.getElementById('foralerts');
-let subjectsOutput = localStorage.getItem("AMSubjects") ? JSON.parse(localStorage.getItem('AMSubjects')) : {};
-let id_count = localStorage.getItem("idcount") ? JSON.parse(localStorage.getItem('idcount')) : 0;
-let attendance = window.localStorage.getItem("AMAttendance") ? JSON.parse(window.localStorage.getItem('AMAttendance')) : {};
+let subjectsOutput = JSON.parse(localStorage.getItem('AMSubjects'));
+let id_count = JSON.parse(localStorage.getItem('idcount'));
+let attendance = JSON.parse(window.localStorage.getItem('AMAttendance'));
 
 // Add Subject Event Listener
 addSubjectBtn.addEventListener('click', () => {
