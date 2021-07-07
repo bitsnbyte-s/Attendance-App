@@ -7,7 +7,6 @@ const days = [
     'Friday',
     'Saturday'
 ]
-
 const E1 = {
     '0':[],
     '1':[11,11,2,6,3],
@@ -16,7 +15,6 @@ const E1 = {
     '4':[1,4,13,13,3,2],
     '5':[9,9,5,3,2,4],
     '6':[],
-    
 }
 
 
@@ -51,14 +49,15 @@ const navlinks = document.querySelectorAll('.nav-lin');
 const ttDays = document.getElementById('TimeTableDays');
 const addSubjectToTT = document.getElementById('addSubjectToTT');
 const daySelect = document.getElementById('day-select');
+const markTodaysAttendance = document.getElementById('markTodaysAttendance');
+const todaysAllAttendance = document.getElementById('todaysAllAttendance');
+const todaysDate = new Date();
+const thisDaySelect = document.getElementById('day-mark-attendance');
 let subjectsOutput = JSON.parse(localStorage.getItem('AMSubjects'));
 let id_count = JSON.parse(localStorage.getItem('idcount'));
 let attendance = JSON.parse(window.localStorage.getItem('AMAttendance'));
 let timeTable = JSON.parse(window.localStorage.getItem('AMTimeTable'));
 
-function getSubjectsFromLocalStorage() {
-    return localStorage.getItem("AMSubjects") ? JSON.parse(localStorage.getItem('AMSubjects')) : [];
-}
 function getFromLocalStorage() {
     return localStorage.getItem("list") ? JSON.parse(localStorage.getItem('list')) : [];
 }
@@ -107,6 +106,81 @@ function forclosebtns(e) {
     e.parentElement.classList.add('d-none');
 }
 
+// ------- Home Page ------------
+
+function removeSubjectFromToday(e){
+    // console.log(e.parentElement);
+    if(e.innerHTML == "Attend"){
+        e.innerHTML = "Leave";
+        // e.parentElement.parentElement
+        e.parentElement.classList.remove('text-muted');
+        e.classList.add('text-danger')
+    }
+    else{
+        e.innerHTML = "Attend";
+        e.parentElement.classList.add('text-muted');
+        
+        e.classList.remove('text-danger')
+    }
+    // const parent = e.parentElement.parentElement;
+    // const child = e.parentElement;
+    // parent.removeChild(child);
+}
+
+function confirmTodaysAttendance(e){
+    const todaysAttendance = document.getElementsByClassName('todaysAttendance');
+    Array.from(todaysAttendance).forEach((e)=>{
+        // console.log(!e.classList.contains('text-muted'));
+        // console.log(attendance[e.dataset.idx][0]);
+        if(!e.classList.contains('text-muted')){
+            attendance[e.dataset.idx][0]++;
+        }
+        attendance[e.dataset.idx][1]++;
+    });
+    window.localStorage.setItem("AMAttendance", JSON.stringify(attendance));
+    refreshAttendanceMarkPage();
+    todaysAllAttendance.innerHTML = ``;
+}
+function cancelTodaysAttendance(){
+    todaysAllAttendance.innerHTML = ``;
+}
+
+function markthisDaysAttendance(e){
+    todaysAllAttendanceinnerHtml = `<div class="card">
+        <div class="card-body">
+        <div class="card-title fw-bold">${days[e]}'s All Lectures</div>
+        <div class="card-text">
+        <ul class="list-group list-group-flush">`
+        todaysAllLectures = timeTable[e];
+        todaysAllLectures.forEach((e)=>{
+            // <li class="list-group-item">An item <button class="btn p-0"><i class="fas fa-minus-circle"></button></i></li>
+            todaysAllAttendanceinnerHtml += `<li class="row todaysAttendance text-muted d-flex list-group-item px-0" data-idx="${e}"><div class="col-sm-9">${subjectsOutput[e]}</div><button onclick="removeSubjectFromToday(this)" data-idx="${e}" class="text-success col-sm-2 btn p-0">Attend</li>`;
+            // console.log(subjectsOutput[e]);
+        });
+        // console.log(todaysAllLectures);
+                  
+        todaysAllAttendanceinnerHtml += `</ul>
+        </div>
+        <button class="btn btn-sm btn-outline-success" onclick="confirmTodaysAttendance(this)">Confirm</button>
+        <button class="btn btn-sm btn-outline-danger" onclick="cancelTodaysAttendance()">Cancel</button>
+        </div>
+        </div>`
+        todaysAllAttendance.innerHTML = todaysAllAttendanceinnerHtml;
+}
+
+function homePage(){
+    // attendanceTable
+    let todaysAllAttendanceinnerHtml = '';
+    let todaysAllLectures;
+    markTodaysAttendance.addEventListener('click',()=>{
+        markthisDaysAttendance(todaysDate.getDay());
+    });
+    thisDaySelect.addEventListener('change',(e)=>{
+        // console.log(e.currentTarget.value);
+        markthisDaysAttendance(e.currentTarget.value);
+    });
+
+}
 
 
 // ------- AddSubjects Section ---------
@@ -272,11 +346,11 @@ let addSubjectToTTOptionsinnerHtml = '';
 
 function addSubjectToDay(e){
     const dayId = e.dataset.dayid;
-    console.log(e.dataset.dayid);
+    // console.log(e.dataset.dayid);
     const subjectToAdd = document.getElementById('subjectToAdd');
-    console.log(subjectToAdd.value);
+    // console.log(subjectToAdd.value);
     timeTable[dayId].push(subjectToAdd.value);
-    console.log(timeTable[dayId]);
+    // console.log(timeTable[dayId]);
     window.localStorage.setItem("AMTimeTable", JSON.stringify(timeTable));
     showchange(daySelect);
 }
@@ -284,7 +358,7 @@ function addSubjectToDay(e){
 function deleteSubjectFromDay(e){
     const dayId = e.dataset.dayid;
     const posInArray = e.dataset.posOfDay;
-    console.log(e.parentElement.parentElement)
+    // console.log(e.parentElement.parentElement)
     const parent = e.parentElement.parentElement.parentElement;
     const child = e.parentElement.parentElement;
     parent.removeChild(child);
@@ -318,6 +392,7 @@ function showchange(e){
 
 
 window.addEventListener("DOMContentLoaded", () => {
+    homePage();
     refreshAttendanceMarkPage();
     refreshSubjectsList();
     closeNavOnLinkClick();
