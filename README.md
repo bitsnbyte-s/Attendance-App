@@ -1,8 +1,8 @@
 # Attendance App
-This app has to been created to manage attendance for college and school students.
+This app has to been created to manage attendance for college and school students. The app uses local store attendance. You can feed your Time Table and then you just have to press one button to mark the attendance of the day.
 
-Note: This project is currently not open for contributions
+Note: This project is not open for contributions
 
-Status : Ongoing
+Status : Completed
 
 Github Pages : https://bitsnbyte-s.github.io/Attendance-App/
