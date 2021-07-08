@@ -62,7 +62,7 @@
                         <div class="text-center">OR</div>
                         <p class="px-2 mb-1">Choose a Day To Mark its Attendance</p>
                         <select class="form-select" onchange="" id="day-mark-attendance" aria-label="Days">
-                            <option disabled selected>Day</option>
+                            <option value="-1" disabled selected>Day</option>
                             <option value="1">Monday</option>
                             <option value="2">Tuesday</option>
                             <option value="3">Wednesday</option>
@@ -102,7 +102,7 @@
                             <input type="text" class="form-control" id="floatingSubjectAdd" placeholder="Subject">
                             <label for="floatingSubject">Subject Name</label>
                         </div>
-                        <button class="btn btn-outline-primary px-5" id="addSubjectBtn">Add</button>
+                        <button class="btn btn-outline-primary px-5" id="subjectPageBtn" onclick="subjectPageBtnFn()">Add</button>
                     </div>
                     <div id="allsubjectsadd">
 
