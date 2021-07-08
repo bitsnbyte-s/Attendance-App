@@ -236,14 +236,24 @@ function deleteThisSubject(e){
     
     function subjectPageBtnFn(){
     if(editFlag){
-        subjectsOutput[subjectIdToEdit] = subjectvalue.value;
-        window.localStorage.setItem("AMSubjects", JSON.stringify(subjectsOutput));
-        refreshSubjectsList();
-        refreshAttendanceMarkPage();
-        homePage();
-        subjectvalue.value = "";
-        subjectPageBtn.innerHTML = "Add";
-        editFlag = false;    
+        if (subjectvalue.value.length < 1) {
+            divforalert.innerHTML = `<div class="alert alert-danger justify-content-between d-flex" role="alert">
+                    <p class="mb-0">
+                    New Subject Name should have length greater than zero
+                    </p>
+                    <button onclick="forclosebtns(this)" type="button" class="btn-close p-1" aria-label="Close"></button>
+                    </div>`;
+        }
+        else{
+            subjectsOutput[subjectIdToEdit] = subjectvalue.value;
+            window.localStorage.setItem("AMSubjects", JSON.stringify(subjectsOutput));
+            refreshSubjectsList();
+            refreshAttendanceMarkPage();
+            homePage();
+            subjectvalue.value = "";
+            subjectPageBtn.innerHTML = "Add";
+            editFlag = false;    
+        }
     }
     else{
         if (subjectvalue.value.length < 1) {
