@@ -40,7 +40,7 @@ if (!window.localStorage.getItem("AMTimeTable"))
 
 // predefined
 const subjectvalue = document.getElementById('floatingSubjectAdd');
-const addSubjectBtn = document.getElementById('addSubjectBtn');
+const subjectPageBtn = document.getElementById('subjectPageBtn');
 const allsubjectsadd = document.getElementById('allsubjectsadd');
 const allsubjectsmark = document.getElementById('allsubjectsmark');
 const divforalert = document.getElementById('foralerts');
@@ -53,6 +53,8 @@ const markTodaysAttendance = document.getElementById('markTodaysAttendance');
 const todaysAllAttendance = document.getElementById('todaysAllAttendance');
 const todaysDate = new Date();
 const thisDaySelect = document.getElementById('day-mark-attendance');
+let editFlag = false;
+let subjectIdToEdit;
 let subjectsOutput = JSON.parse(localStorage.getItem('AMSubjects'));
 let id_count = JSON.parse(localStorage.getItem('idcount'));
 let attendance = JSON.parse(window.localStorage.getItem('AMAttendance'));
@@ -95,7 +97,6 @@ function editLocalStorage(id, value) {
 
 function removeSubjectFromDay(dayId, posInArray){
     let arr = timeTable[dayId];
-    let counter = 0;
     arr.splice(posInArray,1);
     timeTable[dayId]=arr;
     window.localStorage.setItem("AMTimeTable",JSON.stringify(timeTable));
@@ -140,9 +141,11 @@ function confirmTodaysAttendance(e){
     window.localStorage.setItem("AMAttendance", JSON.stringify(attendance));
     refreshAttendanceMarkPage();
     todaysAllAttendance.innerHTML = ``;
+    thisDaySelect.value = "-1";
 }
 function cancelTodaysAttendance(){
     todaysAllAttendance.innerHTML = ``;
+    thisDaySelect.value = "-1";
 }
 
 function markthisDaysAttendance(e){
@@ -154,8 +157,9 @@ function markthisDaysAttendance(e){
         todaysAllLectures = timeTable[e];
         todaysAllLectures.forEach((e)=>{
             // <li class="list-group-item">An item <button class="btn p-0"><i class="fas fa-minus-circle"></button></i></li>
-            todaysAllAttendanceinnerHtml += `<li class="row todaysAttendance text-muted d-flex list-group-item px-0" data-idx="${e}"><div class="col-sm-9">${subjectsOutput[e]}</div><button onclick="removeSubjectFromToday(this)" data-idx="${e}" class="text-success col-sm-2 btn p-0">Attend</li>`;
+            todaysAllAttendanceinnerHtml += `<li class="row todaysAttendance d-flex list-group-item px-0" data-idx="${e}"><div class="col-sm-9">${subjectsOutput[e]}</div><button onclick="removeSubjectFromToday(this)" data-idx="${e}" class="text-danger col-sm-2 btn p-0">Leave</li>`;
             // console.log(subjectsOutput[e]);
+            
         });
         // console.log(todaysAllLectures);
                   
@@ -196,36 +200,85 @@ function closeNavOnLinkClick(){
     });
 }
 
+function editThisSubject(e){
+    editFlag = true;
+    subjectIdToEdit = e.parentElement.parentElement.dataset.subjectid;
+    subjectvalue.value = subjectsOutput[subjectIdToEdit];
+    subjectPageBtn.innerHTML = "Edit";
+}
+
+function deleteThisSubject(e){
+    console.log(e.parentElement.parentElement.dataset.subjectid);
+    const subjectIdToDelete = e.parentElement.parentElement.dataset.subjectid;
+    // attendanc
+    delete attendance[subjectIdToDelete];
+    delete subjectsOutput[subjectIdToDelete];
+    // delete timeTable[subjectIdToDelete];
+    for( let i=0; i<6; i++){
+        timeTable[i] = timeTable[i].filter(item => item !== subjectIdToDelete);
+    }
+    window.localStorage.setItem("AMAttendance", JSON.stringify(attendance));
+    window.localStorage.setItem("AMTimeTable", JSON.stringify(timeTable));
+    window.localStorage.setItem("AMSubjects", JSON.stringify(subjectsOutput));
+    refreshSubjectsList();
+    refreshAttendanceMarkPage();
+    homePage();
+    console.log(attendance);
+    console.log(timeTable);
+    // arr.splice(posInArray,1);
+
+}
+
 
 // Add Subject Event Listener
-addSubjectBtn.addEventListener('click', () => {
-    if (subjectvalue.value.length < 1) {
-        divforalert.innerHTML = `<div class="alert alert-danger justify-content-between d-flex" role="alert">
-                <p class="mb-0">
-                Please Enter Something To Add
-                </p>
-                <button onclick="forclosebtns(this)" type="button" class="btn-close p-1" aria-label="Close"></button>
-                </div>`;
-    }
-    else {
-        // subjectsOutput.push(subjectvalue.value);
-        id_count++;
-        subjectsOutput[id_count] = subjectvalue.value;
+// addSubjectBtn.addEventListener('click', () => {
+    // });
+    
+    function subjectPageBtnFn(){
+    if(editFlag){
+        subjectsOutput[subjectIdToEdit] = subjectvalue.value;
         window.localStorage.setItem("AMSubjects", JSON.stringify(subjectsOutput));
-        window.localStorage.setItem("idcount",id_count);
-        attendance[id_count] = [0,0];
-        window.localStorage.setItem("AMAttendance", JSON.stringify(attendance));
-        refreshAttendanceMarkPage();
         refreshSubjectsList();
-        subjectvalue.value="";
+        refreshAttendanceMarkPage();
+        homePage();
+        subjectvalue.value = "";
+        subjectPageBtn.innerHTML = "Add";
+        editFlag = false;    
     }
-});
+    else{
+        if (subjectvalue.value.length < 1) {
+            divforalert.innerHTML = `<div class="alert alert-danger justify-content-between d-flex" role="alert">
+                    <p class="mb-0">
+                    Please Enter Something To Add
+                    </p>
+                    <button onclick="forclosebtns(this)" type="button" class="btn-close p-1" aria-label="Close"></button>
+                    </div>`;
+        }
+        else {
+            // subjectsOutput.push(subjectvalue.value);
+            id_count++;
+            subjectsOutput[id_count] = subjectvalue.value;
+            window.localStorage.setItem("AMSubjects", JSON.stringify(subjectsOutput));
+            window.localStorage.setItem("idcount",id_count);
+            attendance[id_count] = [0,0];
+            window.localStorage.setItem("AMAttendance", JSON.stringify(attendance));
+            refreshAttendanceMarkPage();
+            refreshSubjectsList();
+            subjectvalue.value="";
+        }
+
+    }
+}
 
 function refreshSubjectsList() {
     subjectsOutput = JSON.parse(window.localStorage.getItem("AMSubjects"));
-    let allsubjectsaddinnerhtml = '<h6>Available Subjects:</h6><ul class="list-group list-group-flush">';
+    let allsubjectsaddinnerhtml = '<h6>Available Subjects:</h6>';
+    if(Object.keys(subjectsOutput).length == 0){
+        allsubjectsaddinnerhtml += ` No subjects added !! Please Add a subject`;
+    }
+    allsubjectsaddinnerhtml += '<ul class="list-group list-group-flush">';
     for (const [key, value] of Object.entries(subjectsOutput)) {
-        allsubjectsaddinnerhtml += `<li class="list-group-item">${value}</li>`;
+        allsubjectsaddinnerhtml += `<li class="list-group-item d-flex justify-content-between" data-subjectid="${key}"><div>${value}</div><div style="min-width:3rem;"><button class="btn p-0 m-0 me-2" onclick="editThisSubject(this)"><i class="far fa-edit text-success"></i></button><button class="btn p-0 m-0" onclick="deleteThisSubject(this)"><i class="fas fa-trash text-danger"></i></button></div></li>`;
     }
     allsubjectsaddinnerhtml += '</ul>';
     allsubjectsadd.innerHTML = allsubjectsaddinnerhtml;
@@ -371,8 +424,8 @@ function showchange(e){
         ttdaysinnerhtml += `No Lectures on ${days[parseInt(e.value)]}`;
     let posOfSubjectinArray = 0;
     timeTable[parseInt(e.value)].forEach((ee)=>{
-        ttdaysinnerhtml += `<div class="row"><div class="col">${subjectsOutput[ee]}</div>
-            <div class="col">
+        ttdaysinnerhtml += `<div class="d-flex justify-content-between"><div class="">${subjectsOutput[ee]}</div>
+            <div class="" style="min-width:2rem;">
             <button class="btn p-0" data-dayid="${e.value}" data-posOfDay="${posOfSubjectinArray}" onclick="deleteSubjectFromDay(this)"><i class="fas fa-trash text-danger"></i></button>
             </div>
         </div>`;
